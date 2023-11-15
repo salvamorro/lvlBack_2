@@ -72,17 +72,20 @@ class UserController extends BaseController
  
          }else{
              $trabajo = $user->trabajo;
-                 
-             $puerta = Puerta::where('id', $trabajo->puerta_id)->first();
-             $piso = Piso::where('id', $trabajo->piso_id)->first();
-             if(isset($puerta)){
-                 $user->puerta = $puerta;
-                 $user->piso = $piso;
- 
-             }else{
-                 $user->puerta = null;
-                 $user->piso = null;
-             }
+            if(isset($trabajo)){
+                $puerta = Puerta::where('id', $trabajo->puerta_id)->first();
+                $piso = Piso::where('id', $trabajo->piso_id)->first();
+                if(isset($puerta)){
+                    $user->puerta = $puerta;
+                    $user->piso = $piso;
+    
+                }else{
+                    $user->puerta = null;
+                    $user->piso = null;
+                }
+            }
+            
+
          $user->password = 'private';
              
              
