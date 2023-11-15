@@ -62,37 +62,39 @@ class UserController extends BaseController
     // =========================================================================
     public function get($id){
         
-        //$user = DB::table("users")->where("id",$id)->first();
-        //$user = User::find($id);
-       // $user = User::with('role')->get($id);
-       $user = new User();
-       $user = User::find($id);
+       try{
+        $user = new User();
+        $user = User::find($id);
+        
+         if(!isset($user)){
+ 
+             return response()->json(["message"=> "User not Found method get(id)"],404);
+ 
+         }else{
+             $trabajo = $user->trabajo;
+                 
+             $puerta = Puerta::where('id', $trabajo->puerta_id)->first();
+             $piso = Piso::where('id', $trabajo->piso_id)->first();
+             if(isset($puerta)){
+                 $user->puerta = $puerta;
+                 $user->piso = $piso;
+ 
+             }else{
+                 $user->puerta = null;
+                 $user->piso = null;
+             }
+         $user->password = 'private';
+             
+             
+             
+         return response()->json($user,200);
+ 
+         }
+       }catch(Exception $e){
+        throw new Error('Error Backend method  "User.pisoPuerta"'.$e->getMessage());
+
+       }
        
-        if(!isset($user)){
-
-            return response()->json(["message"=> "User not Found method get(id)"],404);
-
-        }else{
-            $trabajo = $user->trabajo;
-                
-            $puerta = Puerta::where('id', $trabajo->puerta_id)->first();
-            $piso = Piso::where('id', $trabajo->piso_id)->first();
-            if(isset($puerta)){
-                $user->puerta = $puerta;
-                $user->piso = $piso;
-
-            }else{
-                $user->puerta = null;
-                $user->piso = null;
-            }
-        $user->password = 'private';
-            
-            
-            
-        return response()->json($user,200);
-
-        //return response()->json($objetoUsuario,200);
-        }
     }
     // =========================================================================
     public function pisoPuerta(){
