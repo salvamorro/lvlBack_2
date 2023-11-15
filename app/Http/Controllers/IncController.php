@@ -21,7 +21,9 @@ class IncController extends Controller
         foreach ($incs as $inc) {
             $inc->piso;
             $inc->puerta;
-            $inc->user;
+            $user = $inc->user;
+            $user->trabajo;
+            
             $respuestas = $inc->respuestas;
             foreach( $respuestas as $respuesta) {
                 $respuesta->user;
