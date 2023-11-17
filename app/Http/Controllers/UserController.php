@@ -34,27 +34,19 @@ class UserController extends BaseController
         foreach ($usuarios as $usuario){
             
             $usuario->password = 'private';
-            $usuario->trabajo;
-            if($usuario->trabajo_id!= null || $usuario->trabajo_id!= 0){
+            $trabajoUser = $usuario->trabajo;
+            if(isset($trabajoUser)){
                 $trabajo = Trabajo::find($usuario->trabajo_id);
-                $usuario->role = $trabajo->role;
-                $usuario->venue = $trabajo->venue;
-                $usuario->working = true;
-                $trabajo = new Trabajo;
+                if(isset($trabajo)){
+                    $usuario->role = $trabajo->role;
+                    $usuario->venue = $trabajo->venue;
+                    $usuario->working = true;
+                    $trabajo = new Trabajo;
+                }
             }else{
                 $usuario->working = false;
             }
            
-            
-            
-            //$usuario->role;
-            //$trabajo->venue;
-           
-            
-            
-
-            // $roleNombre = Role::find($usuario->role_id)->nombre;
-            // $usuario->role = $roleNombre;
         }
 
         return response()->json($usuarios,200);
@@ -100,25 +92,32 @@ class UserController extends BaseController
        
     }
     // =========================================================================
-    public function pisoPuerta(){
+    public function pisoPuerta($venue_id){
         try{
             $users = User::where('trabajo_id','!=',NULL)->orderBy('nombre','asc')->get();
+            // $usersDevueltos = array();
             foreach ($users as $user){
                 
+                
                 $trabajo = $user->trabajo;
-                
-                $puerta = Puerta::where('id', $trabajo->puerta_id)->first();
-                $piso = Piso::where('id', $trabajo->piso_id)->first();
-                if(isset($puerta)){
-                    $user->puerta = $puerta;
-                    $user->piso = $piso;
+                if(isset($trabajo)){
+                    $puerta = Puerta::where('id', $trabajo->puerta_id)->first();
+                    $piso = Piso::where('id', $trabajo->piso_id)->first();
+                    if(isset($puerta)){
+                        $user->puerta = $puerta;
+                        $user->piso = $piso;
 
-                }else{
-                    $user->puerta = null;
-                    $user->piso = null;
+                    }else{
+                        $user->puerta = null;
+                        $user->piso = null;
+                    }
+                    $user->working = true;
                 }
-                
-           
+                $user->password = 'private';
+
+                // if($trabajo->venue_id == $venue_id){
+                //     $usersDevueltos[]= $user;
+                // }
 
             }
             return response()->json($users,200);
@@ -132,8 +131,7 @@ class UserController extends BaseController
         $body = $request->getContent();
         $user = json_decode($body);
         
-        $fixedFAlta = date('Y-m-d', strtotime($user->fAlta));
-        $fixedFBaja = date('Y-m-d', strtotime($user->fBaja));
+       
         try {
             
            
@@ -158,23 +156,15 @@ class UserController extends BaseController
             $nuevoUsuario->sexo = $user->sexo;
             $nuevoUsuario->telefono = $user->telefono;
             $nuevoUsuario->superAdmin = $user->superAdmin;
-            $nuevoUsuario->venue_id = intval($user->venue_id);
-            $nuevoUsuario->departamento = $user->departamento;
-            $nuevoUsuario->working = $user->working;
-            $nuevoUsuario->fAlta = $fixedFAlta;
-            $nuevoUsuario->fBaja =$fixedFBaja;
             $nuevoUsuario->password = $password;
-            $nuevoUsuario->role_id = intVal($user->role_id);
-            $nuevoUsuario->piso_id = $piso_id;
-            $nuevoUsuario->puerta_id = $puerta_id;
-            
+            $nuevoUsuario->trabajo_id = 0;
             $nuevoUsuario->save();
 
                 return response()->json(['message'=>'User Added!'],200);
 
         } catch (Exception $exception) {
 
-            throw new Error('Error saving data, Server in "Store" User'.$exception->getMessage(), $exception->getCode());
+            throw new Error('Error saving data, Server in "Store" User'.$exception->getMessage());
            // return response()->json(['error'=> $exception->getMessage(),400]);
         }
        
@@ -187,20 +177,15 @@ class UserController extends BaseController
             if(!isset($usuarioActualizar->id)){
                 throw new Error('Could not find the user to update in database');
             }
-            $fixedFAlta = date('Y-m-d', strtotime($user->fAlta));
-            $fixedFBaja = date('Y-m-d', strtotime($user->fBaja));
             $usuarioActualizar->nombre = $user-> nombre;
             $usuarioActualizar->admin = $user->admin;
             $usuarioActualizar->apellidos = $user->apellidos;
             $usuarioActualizar->sexo = $user->sexo;
             $usuarioActualizar->telefono = $user->telefono;
             $usuarioActualizar->superAdmin = $user->superAdmin;
-            $usuarioActualizar->venue_id = intval($user->venue_id);
-            $usuarioActualizar->departamento = $user->departamento;
-            $usuarioActualizar->working = $user->working;
-            $usuarioActualizar->fAlta = $fixedFAlta;
-            $usuarioActualizar->fBaja =$fixedFBaja;
-            $usuarioActualizar->role_id = intVal($user->role_id);
+            if(isset($user->trabajo_id)){
+                $usuarioActualizar->trabajo_id = $user->trabajo_id;
+            }
             $usuarioActualizar->update();
 
                 return response()->json(['message'=>'User Updated!'],200);

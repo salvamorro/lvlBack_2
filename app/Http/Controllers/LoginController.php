@@ -37,7 +37,7 @@ class LoginController extends BaseController
     $ok = Hash::check($passwordBruta, $user->password);
 
     if(!$ok){
-        return response()->json(["message"=>'Mail was found but the password is wrong'],400);
+        return response()->json(["message"=>'Mail OK. Password is wrong'],400);
     }
     
     $token  = [
@@ -47,7 +47,7 @@ class LoginController extends BaseController
         'admin'=> $user->admin,
         'superAdmin'=> $user->superAdmin,
         'iat'=> time(),
-        'expires' =>time()+(7*24*60*60),
+        'expires' =>time()+(60),
         'iss' => 'http://example.org',
         'aud' => 'http://example.com',
     ] ;

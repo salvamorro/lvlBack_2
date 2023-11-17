@@ -46,6 +46,7 @@ class IncController extends Controller
             $inc->user;
             $inc->piso;
             $inc->puerta;
+            $inc->respuestas;
 
             return response()->json($inc,200);
         }

@@ -49,7 +49,6 @@ class PuertaController extends BaseController
             $puertaNueva = new Puerta;
             $puertaNueva->nombre = $puerta->nombre;
             $puertaNueva->camasTotal = $puerta->camasTotal;
-            $puertaNueva->camasOcupadas = 0;
             $puertaNueva->piso_id = $id;
 
             $puertaNueva->save();
@@ -112,9 +111,9 @@ class PuertaController extends BaseController
                     throw new Exception('There is '.$alojados.' user/s in this apartment, you can not delete it.');
                 }
 
-                $piso->camasEnBloque -=$puerta->camasTotal;
-                $piso->camasEnBloqueLibres -=$puerta->camasTotal;
-                $piso->update();
+                // $piso->camasEnBloque -=$puerta->camasTotal;
+                // $piso->camasEnBloqueLibres -=$puerta->camasTotal;
+                // $piso->update();
 
                 $puerta->delete();
     
@@ -123,7 +122,7 @@ class PuertaController extends BaseController
     
             } catch (Exception $exception) {
     
-                throw new Exception('Could not delete Apartment in the database: '.$exception->getMessage());
+                throw new Exception('Exception DeleteDoorMethod : '.$exception->getMessage());
             }
     }
     public function getRelated($piso_id){
