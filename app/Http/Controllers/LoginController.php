@@ -47,7 +47,7 @@ class LoginController extends BaseController
         'admin'=> $user->admin,
         'superAdmin'=> $user->superAdmin,
         'iat'=> time(),
-        'expires' =>time()+(60),
+        'expires' =>time()+(7*24*60*60),
         'iss' => 'http://example.org',
         'aud' => 'http://example.com',
     ] ;
