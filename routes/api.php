@@ -93,5 +93,5 @@ Route::delete('trabajo/{id}', [TrabajoController::class,'delete']);
 Route::get("venue/",[VenueController::class,"index"]);
 Route::get("venue/{id}",[VenueController::class,"show"]);
 Route::post('venue/',[VenueController::class,'store']);
-Route::put('venue/{id}', [VenueController::class,'actualizar']);
+Route::put('venue/', [VenueController::class,'actualizar']);
 Route::delete("venue/{id}", [VenueController::class,'delete']);
