@@ -64,7 +64,7 @@ Route::post('respuesta/{id}', [RespuestaController::class,'actualizar']);
 Route::get('user/', [UserController::class,'index']);
 Route::get('user/{id}', [UserController::class,'show']);
 Route::get('user/{id}', [UserController::class,'get']);
-Route::get('user/piso/puerta/{venue_id}', [UserController::class,'pisoPuerta']);
+Route::get('user/piso/puerta/', [UserController::class,'pisoPuerta']);
 Route::get("user/delete/{id}", [UserController::class,'delete']);
 
 Route::post('user/', [UserController::class,'store']);

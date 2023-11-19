@@ -92,7 +92,7 @@ class UserController extends BaseController
        
     }
     // =========================================================================
-    public function pisoPuerta($venue_id){
+    public function pisoPuerta(){
         try{
             $users = User::where('trabajo_id','!=',NULL)->orderBy('nombre','asc')->get();
             // $usersDevueltos = array();
