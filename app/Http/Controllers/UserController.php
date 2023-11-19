@@ -115,10 +115,6 @@ class UserController extends BaseController
                 }
                 $user->password = 'private';
 
-                // if($trabajo->venue_id == $venue_id){
-                //     $usersDevueltos[]= $user;
-                // }
-
             }
             return response()->json($users,200);
         }catch(Exception $e){
