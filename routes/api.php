@@ -66,7 +66,7 @@ Route::get('user/{id}', [UserController::class,'show']);
 Route::get('user/{id}', [UserController::class,'get']);
 Route::get('user/piso/puerta/', [UserController::class,'pisoPuerta']);
 Route::get("user/delete/{id}", [UserController::class,'delete']);
-
+Route::get("user/listado/inicial",[UserController::class,'listadoInicial']);
 Route::post('user/', [UserController::class,'store']);
 Route::post('user/{id}', [UserController::class,'update']);
 Route::post('user/piso/{id}', [UserController::class,'updatePiso']);

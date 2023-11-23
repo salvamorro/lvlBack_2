@@ -51,6 +51,43 @@ class UserController extends BaseController
 
         return response()->json($usuarios,200);
     }
+    public function listadoInicial(){
+        try{
+            $users = User::all();
+
+            foreach($users as $user){
+                $trabajo = $user->trabajo;
+                if(isset( $trabajo)){
+
+                    $venue =  $trabajo->venue;
+
+                    if(isset($venue)){
+                        $user->venueNombre = $venue->nombre;
+                    }
+    
+                    $role =  $trabajo->role;
+    
+                    if(isset($role)){
+                        $user->roleNombre = $role->nombre;
+                    }
+                }else{
+                    $user->venueNombre = '';
+                    $user->roleNombre = '';
+                }
+               
+            }
+            
+
+                 
+             return response()->json($users,200);
+     
+        
+           }catch(Exception $e){
+            throw new Error('Error ListadoInicial User Controller:\r '.$e->getMessage());
+    
+           }
+    }
+    
     // =========================================================================
     public function get($id){
         
