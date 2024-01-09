@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\AvisoIncidenciaAbierta;
+use App\Models\Inc;
 use App\Models\Respuesta;
 use App\Models\User;
 use Error;
@@ -12,6 +14,7 @@ use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 
 class RespuestaController extends BaseController
 {
@@ -53,6 +56,8 @@ class RespuestaController extends BaseController
             $respuestaNueva->foto = $respuesta->foto;
 
             $respuestaNueva->save();
+
+
 
             return response()->json(['message'=>'Answer Added!'],200);
 

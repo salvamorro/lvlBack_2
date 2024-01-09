@@ -21,10 +21,13 @@ class LoginController extends BaseController
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
     public $sKey ;
+
+
     public function __construct(){
         $this->sKey = 'L@Cl@v3S3cr3T@098098';
     }
-   public function login(Request $request){
+
+    public function login(Request $request){
     $user = new User();
     
     $user = DB::table("users")->where("mail", $request->input("mail"))->first();
@@ -54,6 +57,32 @@ class LoginController extends BaseController
         $jwt = JWT::encode($token, $this->sKey, 'HS384');
 
         return response()->json([$jwt, 200]);
+    }
+
+    public function cambiarPass($user_id,request $request){
+        $body = $request->getContent();
+        $pass = $body;
+
+
+        try {
+            $user = User::find($user_id);
+            if(!isset($user)){
+                throw new Exception('Can not find user');
+            }
+            $password = Hash::make($pass);
+            $user->password = $password;
+            $user->update();
+
+            return response()->json(['message'=>'Password Changed!'], 200);
+
+        } catch (Exception $exception) {
+            throw new Exception('Error chaging pass '.$exception->getMessage(), $exception->getCode());
+        }
+       
+
+
+
+
     }
 
    

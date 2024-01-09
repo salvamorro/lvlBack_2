@@ -19,6 +19,7 @@ use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Controllers\BadResponseException;
+use Carbon\Carbon;
 use Spatie\FlareClient\Http\Exceptions\BadResponse;
 
 class UserController extends BaseController
@@ -58,6 +59,12 @@ class UserController extends BaseController
             foreach($users as $user){
                 $trabajo = $user->trabajo;
                 if(isset( $trabajo)){
+                    $hoy = new Date();
+                    if($trabajo->fBaja>$hoy){
+                        $trabajo->activo = 1;
+                    }else{
+                        $trabajo->activo = 0;
+                    }
 
                     $venue =  $trabajo->venue;
 
@@ -102,6 +109,12 @@ class UserController extends BaseController
          }else{
              $trabajo = $user->trabajo;
             if(isset($trabajo)){
+                $hoy = Carbon::now();
+                if($trabajo->fBaja>$hoy){
+                    $trabajo->activo = 1;
+                }else{
+                    $trabajo->activo = 0;
+                }
                 $puerta = Puerta::where('id', $trabajo->puerta_id)->first();
                 $piso = Piso::where('id', $trabajo->piso_id)->first();
                 if(isset($puerta)){
@@ -184,8 +197,15 @@ class UserController extends BaseController
             $nuevoUsuario = new User;
             $nuevoUsuario->nombre = $user-> nombre;
             $nuevoUsuario->admin = $user->admin;
+            $nuevoUsuario->adminPiso = $user->adminPiso;
+            $nuevoUsuario->adminRRHH = $user->adminRRHH;
+            $nuevoUsuario->adminPay = $user->adminPay;
+            
             $nuevoUsuario->apellidos = $user->apellidos;
             $nuevoUsuario->mail = $user->mail;
+            if(!$this->mailUnico($nuevoUsuario->mail, $user->id)){
+                throw new Error('This mail is being used, please select another.');
+            }
             $nuevoUsuario->sexo = $user->sexo;
             $nuevoUsuario->telefono = $user->telefono;
             $nuevoUsuario->superAdmin = $user->superAdmin;
@@ -212,6 +232,15 @@ class UserController extends BaseController
             }
             $usuarioActualizar->nombre = $user-> nombre;
             $usuarioActualizar->admin = $user->admin;
+            $usuarioActualizar->adminPiso = $user->adminPiso;
+            $usuarioActualizar->adminRRHH = $user->adminRRHH;
+            $usuarioActualizar->adminPay = $user->adminPay;
+            $usuarioActualizar->mail = $user->mail;
+            if($this->mailUnico($usuarioActualizar->mail, $user->id)){
+               
+            }else{
+                throw new Error('This mail is being used, please select another.');
+            }
             $usuarioActualizar->apellidos = $user->apellidos;
             $usuarioActualizar->sexo = $user->sexo;
             $usuarioActualizar->telefono = $user->telefono;
@@ -282,14 +311,23 @@ class UserController extends BaseController
        
     }
     // =========================================================================
+    public function mailUnico($mail, $user_id):bool{
+        $esUnico = false;
+
+        $user = User::where('mail',$mail)->first();
+
+        if(!isset($user) || $user->id == $user_id){
+            $esUnico = true;
+        }
+
+        return $esUnico;
+
+    }
+    public function getResponsable($trabajo){
+       $responsables = User::where('departamento',$trabajo->departamento)->where('admin',1)->get();
+
+       return $responsables;
+
+    }
 }
 
-// function updatePisoYPuerta($piso_id, $puerta_id, $valor){
-//     $piso = Piso::find($piso_id);
-//     $piso->camasEnBloqueLibres -= $valor;
-//     $piso->update();
-
-//     $puerta = Puerta::find($puerta_id);
-//     $puerta->camasOcupadas += $valor;
-//     $puerta->update();
-// }

@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\AvisoIncidenciaAbierta;
 use App\Models\Inc;
+use App\Models\User;
 use Exception;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 
 class IncController extends Controller
 {
@@ -71,6 +74,8 @@ class IncController extends Controller
             throw new Exception('Error getting related Issues of the user: '.$exception->getMessage());
         }
     }   
+   
+    
 
     // =========================================================================
     public function store(Request $request){
@@ -90,11 +95,10 @@ class IncController extends Controller
             $incNueva->piso_id = $inc->piso_id;
             $incNueva->foto = $inc->foto;
             $incNueva->closed = $inc->closed;
-           
-            
             $incNueva->save();
 
-        
+         
+
             return response()->json(['message'=>'Issue Sended!'],200);
 
         } catch (Exception $exception) {
@@ -140,6 +144,12 @@ class IncController extends Controller
             throw new Exception('Error updating issue data'.$exception->getMessage());
         }
     }
+    public function getResponsable($trabajo){
+        $responsables = User::where('departamento',$trabajo->departamento)->where('admin',1)->get();
+ 
+        return $responsables;
+ 
+     }
 
    
     

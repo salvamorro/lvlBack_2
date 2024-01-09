@@ -29,6 +29,12 @@ class TrabajoController extends Controller
     public function getOne(int $id){
         try {
             $trabajo = Trabajo::find($id);
+            $hoy = new Date();
+            if($trabajo->fBaja>$hoy){
+                $trabajo->activo = 1;
+            }else{
+                $trabajo->activo = 0;
+            }
 
             if(!isset($trabajo)){
                 throw new Exception('Could not find the job method->getOne('.$id.')');
