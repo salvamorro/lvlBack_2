@@ -43,7 +43,6 @@ class primeraNotificacion extends Mailable
     {
         return new Envelope(
             subject: 'New '.$this->tipo.' from: '.$this->user->nombre.' '.$this->user->apellidos,
-            from: new Address('no-reply@alexaparicio.com'),
 
         );
     }

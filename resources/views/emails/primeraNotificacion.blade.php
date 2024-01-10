@@ -61,7 +61,10 @@
         </div>
             <p>Kind regards, Lio Team</p>
             <br>
-            <a type="button" class="button" href="<?php echo getenv('GoToAPP')?>">Go To App</a> 
+            <a type="button" class="button" href="<?php 
+                $direccion = getenv('GoToAPP');
+                echo $direccion
+            ?>">Go To App</a> 
 
         </div>
         {{-- <a type="button" class="button" href="www.google.com">Go To App</a> --}}

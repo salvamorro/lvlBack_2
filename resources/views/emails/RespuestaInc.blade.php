@@ -59,7 +59,10 @@
         <br>
 
     </div>
-    <a type="button" class="button" href="<?php echo getenv('GoToAPP')?>">Go To App</a> 
+    <a type="button" class="button" href="<?php 
+                $direccion = getenv('GoToAPP');
+                echo $direccion
+    ?>">Go To App</a> 
    
   </body>
     <footer class="letraPequeña">
