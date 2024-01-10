@@ -121,14 +121,7 @@ Route::post('respuestaRRHH/', [RespuestaRRHHController::class,'store']);
 Route::delete("respuestaRRHH/{id}", [RespuestaRRHHController::class,'delete']);
 Route::put('respuestaRRHH/', [RespuestaRRHHController::class,'actualizar']);
 
-// ============================================================================= MAIL
 
-Route::get('/mailable', function () {
-    $user = App\Models\User::find(2);
-    $inc = App\Models\Inc::where('user_id', $user->id)->first();
- 
-   // return new App\Mail\RecordarPass();
-});
 
  // ========================================================================== MAIL
  Route::post('mail/nuevaInc/', [MailController::class,'nuevaInc']);
