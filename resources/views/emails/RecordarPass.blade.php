@@ -55,7 +55,8 @@
 
         </div>
        <a type="button" class="button" href=<?php
-         $direccion = "http://localhost:4200/rememberPass/" . $jwt; 
+            $app = getenv('GoToAPP');
+         $direccion = $app."/rememberPass/" . $jwt; 
          
          echo $direccion;
 
