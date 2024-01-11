@@ -11,6 +11,7 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Routing\Controller as BaseController;
+use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -83,6 +84,21 @@ class LoginController extends BaseController
 
 
 
+    }
+
+    public function decodePass(Request $request){
+
+        try {
+            $pass = Hash::make($request->getContent());
+            //$decrypt= Crypt::decrypt($user->password);  
+            
+            return response()->json([$pass, 200]);
+
+        } catch (Exception $exception) {
+            throw new Exception('Error DECODE login: '.$exception->getMessage(), $exception->getCode());
+        }
+      
+        
     }
 
    

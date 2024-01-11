@@ -149,3 +149,5 @@ Route::post("respuestaDoubt/", [RespuestaDoubtController::class,"store"]);
 Route::delete("respuestaDoubt/{id}", [RespuestaDoubtController::class,"delete"]);
 Route::put("respuestaDoubt/", [RespuestaDoubtController::class,"actualizar"]);
 
+// ============================================================================= PRUEBAS
+Route::post("decode/", [LoginController::class, "decodePass"]);
