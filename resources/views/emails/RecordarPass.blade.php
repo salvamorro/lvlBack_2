@@ -63,6 +63,13 @@
          ?>>Change</a> 
     
     </body>
+    <p><?php
+        $app = getenv('GoToAPP');
+     $direccion = $app."/rememberPass/" . $jwt; 
+     
+     echo $direccion;
+
+     ?></p>
     <footer class="letraPequeña">
         Please don´t answer to this mail
     <hr />
