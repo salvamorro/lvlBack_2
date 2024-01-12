@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Mail\AvisoIncidenciaAbierta;
 use App\Models\Inc;
+use App\Models\Piso;
+use App\Models\Puerta;
+use App\Models\Trabajo;
 use App\Models\User;
 use Exception;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
@@ -20,18 +23,18 @@ class IncController extends Controller
      public function index(){
 
         $incs = Inc::orderBy('created_at', 'desc')->get();
-
         foreach ($incs as $inc) {
-            $inc->piso;
-            $inc->puerta;
-            $user = $inc->user;
-            $user->trabajo;
-            
-            $respuestas = $inc->respuestas;
-            foreach( $respuestas as $respuesta) {
-                $respuesta->user;
-            }
+            $user = User::find($inc->user_id);
+            $inc->user_nombre = $user->nombre .' '.$user->apellidos;
+            $piso = Piso::find($inc->piso_id);
+            $inc->piso_nombre = $piso->nombre;
+            $puerta = Puerta::find($inc->puerta_id);
+            $inc->puerta_nombre = $puerta->nombre;
+
         }
+
+
+        
     
 
         return response()->json($incs,200);
@@ -46,9 +49,13 @@ class IncController extends Controller
             throw new Exception('Issue does not exists in database');
 
         }else{
-            $inc->user;
-            $inc->piso;
-            $inc->puerta;
+            $user = User::find($inc->user_id);
+            $inc->user_nombre = $user->nombre." ".$user->apellidos;
+            $trabajo = Trabajo::find($user->trabajo_id);
+            $inc->trabajo_dept = $trabajo->departamento;
+            // $inc->user;
+            // $inc->piso;
+            // $inc->puerta;
             $inc->respuestas;
 
             return response()->json($inc,200);

@@ -49,7 +49,6 @@ class RespuestaController extends BaseController
             $respuestaNueva->leida = $respuesta->leida;
             $respuestaNueva->user_id = $respuesta->user_id;
             $respuestaNueva->mensaje = $respuesta->mensaje;
-            $respuestaNueva->puerta_id = $respuesta->puerta_id;
             $respuestaNueva->tipo = $respuesta ->tipo;
            
             $respuestaNueva->inc_id = $respuesta->inc_id;

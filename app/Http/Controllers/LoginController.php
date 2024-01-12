@@ -89,6 +89,7 @@ class LoginController extends BaseController
     public function decodePass(Request $request){
 
         try {
+            $passss = $request->getContent();
             $pass = Hash::make($request->getContent());
             //$decrypt= Crypt::decrypt($user->password);  
             

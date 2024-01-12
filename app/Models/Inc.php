@@ -11,7 +11,11 @@ use Illuminate\Database\Eloquent\Relations\HasOneThrough;
 class Inc extends Model
 {
     use HasFactory;
-
+    protected $hidden = [
+    
+        "updated_at",
+        "foto"
+    ];
     public function user(): BelongsTo{
         return $this->belongsTo(User::class);
     }

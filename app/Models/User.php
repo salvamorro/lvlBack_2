@@ -11,6 +11,8 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasOneThrough;
 
 class User extends Model{
+
+    
     // public ?int $id = null;
     // public string $nombre;
     // public string $apellidos;

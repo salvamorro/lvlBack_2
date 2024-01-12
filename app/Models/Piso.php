@@ -9,9 +9,7 @@ use Illuminate\Database\Eloquent\Relations\HasOneThrough;
 
 class Piso extends Model
 {
-  // public function puertas(): HasMany{
-  //   return $this->hasMany(Puerta::class);
-  // }
+
   public function venue(): BelongsTo{
     return $this->belongsTo(Venue::class);
   }
