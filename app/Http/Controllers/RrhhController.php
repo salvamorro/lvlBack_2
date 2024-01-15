@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Rrhh;
+use App\Models\User;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
@@ -20,7 +21,9 @@ class RrhhController extends Controller
         $rrhhs = Rrhh::orderBy('created_at', 'desc')->get();
 
         foreach($rrhhs as $rrhh){
-            $user = $rrhh->user;
+            
+            $user = User::find($rrhh->user_id);
+            $rrhh->user_nombre = $user->nombre . ' ' . $user->apellidos;
             $user->trabajo;
             $respuestas = $rrhh->respuestasRRHH;
             foreach($respuestas as $respuesta){

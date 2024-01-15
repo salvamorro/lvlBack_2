@@ -67,13 +67,13 @@ class IncController extends Controller
             $incs = Inc::where('user_id', $id)->orderBy('created_at', 'desc')->get();
 
             foreach ($incs as $inc) {
-                $inc->piso;
-                $inc->puerta;
-                $inc->user;
+              
+                $user = User::find($inc->user_id);
+                $inc->user_nombre = $user->nombre . ' ' . $user->apellidos;
                 $respuestas = $inc->respuestas;
-                foreach( $respuestas as $respuesta) {
-                    $respuesta->user;
-                }
+                // foreach( $respuestas as $respuesta) {
+                //     $respuesta->user;
+                // }
             }
             return response()->json($incs,200);
 

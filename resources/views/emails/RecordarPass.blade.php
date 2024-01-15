@@ -56,20 +56,20 @@
         </div>
        <a type="button" class="button" href=<?php
             $app = getenv('GoToAPP');
-         $direccion = $app."/rememberPass/" . $jwt; 
+         $direccion = $app."/#/rememberPass/" . $jwt; 
          
          echo $direccion;
 
          ?>>Change</a> 
     
     </body>
-    <p><?php
+    {{-- <p><?php
         $app = getenv('GoToAPP');
-     $direccion = $app."/rememberPass/" . $jwt; 
+     $direccion = $app."/#/rememberPass/" . $jwt; 
      
      echo $direccion;
 
-     ?></p>
+     ?></p> --}}
     <footer class="letraPequeña">
         Please don´t answer to this mail
     <hr />

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Doubt;
+use App\Models\User;
 use Exception;
 use Illuminate\Http\Request;
 
@@ -15,7 +16,8 @@ class DoubtController extends Controller
 
         foreach($doubts as $doubt){
             $respuestas = $doubt->respuestas;
-            $user=$doubt->user;
+            $user= User::find($doubt->user_id);
+            $doubt->user_nombre = $user->nombre. ' '. $user->apellidos;
             $user->trabajo;
             foreach($respuestas as $respuesta){
                 $user = $respuesta->user;

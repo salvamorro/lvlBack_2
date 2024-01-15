@@ -11,7 +11,7 @@ class Respuesta extends Model
 
     protected $hidden = [
         "created_at",
-        "updated_at", "foto"
+        "updated_at"
     ];
    public function inc(): BelongsTo{
     return $this->belongsTo(Inc::class);

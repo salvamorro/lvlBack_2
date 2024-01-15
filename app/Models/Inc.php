@@ -13,8 +13,7 @@ class Inc extends Model
     use HasFactory;
     protected $hidden = [
     
-        "updated_at",
-        "foto"
+        "updated_at"
     ];
     public function user(): BelongsTo{
         return $this->belongsTo(User::class);
