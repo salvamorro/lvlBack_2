@@ -49,7 +49,8 @@ Route::delete("piso/{id}", [PisoController::class,"delete"]);
 Route::get("piso/venue/{id}", [PisoController::class,"comprobarSiVenue"]);
 
 // =============================================================================INCS
-Route::get("inc/", [IncController::class,"index"]);
+Route::get("inc/", [IncController::class,"indexAbiertas"]);
+Route::get("inc/incCerradas", [IncController::class, "indexTodas"]);
 Route::get("inc/{id}",[IncController::class,"show"]);
 Route::post("inc/",[IncController::class,"store"]);
 Route::get("inc/delete/{id}", [IncController::class,"delete"]);
@@ -73,7 +74,7 @@ Route::get("user/", [UserController::class,"index"]);
 Route::get("user/{id}", [UserController::class,"show"]);
 Route::get("user/{id}", [UserController::class,"get"]);
 Route::get("user/piso/puerta/", [UserController::class,"pisoPuerta"]);
-Route::get("user/delete/{id}", [UserController::class,"delete"]);
+Route::delete("user/{id}", [UserController::class,"delete"]);
 Route::get("user/listado/inicial",[UserController::class,"listadoInicial"]);
 Route::post("user/", [UserController::class,"store"]);
 Route::post("user/{id}", [UserController::class,"update"]);

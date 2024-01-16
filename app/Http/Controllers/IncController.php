@@ -20,16 +20,61 @@ class IncController extends Controller
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
      // =========================================================================
-     public function index(){
+     public function indexAbiertas(){
+
+        $incs = Inc::where('estado','!=', 'Closed')->orderBy('created_at', 'desc')->get();
+        foreach ($incs as $inc) {
+            $user = User::find($inc->user_id);
+            if(isset($user)){
+                $inc->user_nombre = $user->nombre .' '.$user->apellidos;
+            }else{
+                $inc->user_nombre = '';
+            } 
+            $piso = Piso::find($inc->piso_id);
+            if(isset($piso)){
+                $inc->piso_nombre = $piso->nombre;
+            }else{
+                $inc->piso_nombre = '';
+            } 
+            $puerta = Puerta::find($inc->puerta_id);
+            if(isset($puerta)){
+                $inc->puerta_nombre = $puerta->nombre;
+            }else{
+                $inc->puerta_nombre = '';
+            } 
+           
+
+        }
+
+
+        
+    
+
+        return response()->json($incs,200);
+    }
+    public function indexTodas(){
 
         $incs = Inc::orderBy('created_at', 'desc')->get();
         foreach ($incs as $inc) {
             $user = User::find($inc->user_id);
-            $inc->user_nombre = $user->nombre .' '.$user->apellidos;
+            if(isset($user)){
+                $inc->user_nombre = $user->nombre .' '.$user->apellidos;
+            }else{
+                $inc->user_nombre = '';
+            } 
             $piso = Piso::find($inc->piso_id);
-            $inc->piso_nombre = $piso->nombre;
+            if(isset($piso)){
+                $inc->piso_nombre = $piso->nombre;
+            }else{
+                $inc->piso_nombre = '';
+            } 
             $puerta = Puerta::find($inc->puerta_id);
-            $inc->puerta_nombre = $puerta->nombre;
+            if(isset($puerta)){
+                $inc->puerta_nombre = $puerta->nombre;
+            }else{
+                $inc->puerta_nombre = '';
+            } 
+           
 
         }
 
