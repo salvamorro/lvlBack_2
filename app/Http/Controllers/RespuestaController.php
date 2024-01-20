@@ -23,7 +23,7 @@ class RespuestaController extends BaseController
     // =========================================================================
     public function index(){
 
-        $respuestas = Respuesta::orderbyDesc('created_at')->get();
+        $respuestas = Respuesta::orderbyDesc('created_at','desc')->get();
 
         return response()->json($respuestas,200);
     }
