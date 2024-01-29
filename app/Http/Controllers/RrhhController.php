@@ -89,6 +89,7 @@ class RrhhController extends Controller
             $rrhhNueva->end = Carbon::parse($rrhh->end);
             $rrhhNueva->descripcion = $rrhh->descripcion;
             $rrhhNueva->estado = $rrhh->estado;
+            $rrhhNueva->closed = $rrhh->closed;
            
             
             $rrhhNueva->save();
@@ -127,6 +128,7 @@ class RrhhController extends Controller
             $rrhhBackend->end = Carbon::parse($rrhhFrontend->end);
             $rrhhBackend->descripcion = $rrhhFrontend->descripcion;
             $rrhhBackend->estado = $rrhhFrontend->estado;
+            $rrhhBackend->closed = $rrhhFrontend->closed;
           
 
             $rrhhBackend->update();

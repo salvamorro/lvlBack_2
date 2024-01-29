@@ -62,7 +62,7 @@ class RespuestaController extends BaseController
 
         } catch (Exception $exception) {
 
-            throw new Error('Could not save the answer in the database'.$exception->getMessage());
+            throw new Error('Could not save the answer in the database: '.$exception->getMessage());
         }
        
     }

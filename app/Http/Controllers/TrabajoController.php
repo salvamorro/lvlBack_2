@@ -60,6 +60,10 @@ class TrabajoController extends Controller
             $trabajo->venue_id = $trabajoFront->venue_id;
             $trabajo->role_id = $trabajoFront->role_id;
             $trabajo->departamento = $trabajoFront->departamento;
+            if(!isset($trabajoFront->indefinido)){
+                $trabajoFront->indefinido = 0;
+            }
+            $trabajo->indefinido = $trabajoFront->indefinido;
             
             $trabajo->fAlta = Carbon::parse($trabajoFront->fAlta);
             $trabajo->fBaja = Carbon::parse($trabajoFront->fBaja);
@@ -141,7 +145,11 @@ class TrabajoController extends Controller
             $trabajo->venue_id = $trabajoFront->venue_id;
             $trabajo->role_id = $trabajoFront->role_id;
             $trabajo->departamento = $trabajoFront->departamento;
-            
+            if(!isset($trabajoFront->indefinido)){
+                $trabajoFront->indefinido = 0;
+            }
+            $trabajo->indefinido = $trabajoFront->indefinido;
+
             $trabajo->fAlta = Carbon::parse($trabajoFront->fAlta);
             $trabajo->fBaja = Carbon::parse($trabajoFront->fBaja);           
            
