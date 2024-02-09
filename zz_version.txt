@@ -1,5 +1,6 @@
-3.9.0 16/01/24
 
+
+5.1 
 5.0 Major Uodate
 4.1 nuevos campos, rrhh.closed y trabajo.indefinido
 3.9 - problema de servidor al grabar una respuesta nueva POST respuesta

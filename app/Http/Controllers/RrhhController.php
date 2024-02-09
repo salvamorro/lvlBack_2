@@ -87,16 +87,18 @@ class RrhhController extends Controller
                
                     $user = $t->user;
                     // 3º con la lista de users localizo ls laeve metodo user->rrhh para sacar sus rrhh
-                    $rrhh = $user->rrhhs;
+                    if(count($user->rrhhs)>0){
+                        $rrhh = $user->rrhhs;
                     
-                    
-                    foreach($rrhh as $r){
-                        $r->user_nombre = $user->nombre . " " . $user->apellidos;
-                        $r->respuestasRRHH;
-                        $trabajo = $user->trabajo;
-                        $r->departamento = $trabajo->departamento;
-                        array_push($rrhhs,$r);
+                        foreach($rrhh as $r){
+                            $r->user_nombre = $user->nombre . " " . $user->apellidos;
+                            $r->respuestasRRHH;
+                            $trabajo = $user->trabajo;
+                            $r->departamento = $trabajo->departamento;
+                            array_push($rrhhs,$r);
+                        }
                     }
+                   
                     
             }
             
