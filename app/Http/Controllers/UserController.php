@@ -163,10 +163,45 @@ class UserController extends BaseController
                     }
                     $user->working = true;
                 }
-                $user->password = 'private';
+                // $user->password = 'private';
 
             }
             return response()->json($users,200);
+        }catch(Exception $e){
+            throw new Error('Error Backend method  "User.pisoPuerta"'.$e->getMessage());
+        }
+    }
+     // =========================================================================
+     public function pisoPuertaVenue($venue_id){
+        try{
+            $users = User::where('trabajo_id','!=',NULL)->orderBy('nombre','asc')->get();
+            
+            $usersDelVenue = [];
+            
+            foreach ($users as $user){
+                
+                $trabajo = $user->trabajo;
+               
+                if(isset($trabajo)){
+                    $puerta = Puerta::where('id', $trabajo->puerta_id)->first();
+                    $piso = Piso::where('id', $trabajo->piso_id)->first();
+                    if(isset($puerta)){
+                        $user->puerta = $puerta;
+                        $user->piso = $piso;
+
+                    }else{
+                        $user->puerta = null;
+                        $user->piso = null;
+                    }
+                    $user->working = true;
+                }
+                
+                if($trabajo->venue_id == $venue_id){
+                    array_push($usersDelVenue, $user);
+                }
+
+            }
+            return response()->json($usersDelVenue,200);
         }catch(Exception $e){
             throw new Error('Error Backend method  "User.pisoPuerta"'.$e->getMessage());
         }
@@ -200,6 +235,7 @@ class UserController extends BaseController
             $nuevoUsuario->adminPiso = $user->adminPiso;
             $nuevoUsuario->adminRRHH = $user->adminRRHH;
             $nuevoUsuario->adminPay = $user->adminPay;
+            $nuevoUsuario->reciMails = $user->reciMails;
             
             $nuevoUsuario->apellidos = $user->apellidos;
             $nuevoUsuario->mail = $user->mail;
@@ -213,7 +249,7 @@ class UserController extends BaseController
             $nuevoUsuario->trabajo_id = 0;
             $nuevoUsuario->save();
 
-                return response()->json(['message'=>'User Added!'],200);
+                return response()->json($nuevoUsuario,200);
 
         } catch (Exception $exception) {
 
@@ -235,6 +271,8 @@ class UserController extends BaseController
             $usuarioActualizar->adminPiso = $user->adminPiso;
             $usuarioActualizar->adminRRHH = $user->adminRRHH;
             $usuarioActualizar->adminPay = $user->adminPay;
+            $usuarioActualizar->reciMails = $user->reciMails;
+            
             $usuarioActualizar->mail = $user->mail;
             if($this->mailUnico($usuarioActualizar->mail, $user->id)){
                

@@ -17,6 +17,10 @@ class Trabajo extends Model
         return $this->belongsTo(Venue::class);
     }
 
+    public function user():BelongsTo{
+        return $this->belongsTo(User::class);
+    }
+
     public function role():BelongsTo{
         return $this->belongsTo(Role::class);
     }

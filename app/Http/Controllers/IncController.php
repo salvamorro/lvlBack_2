@@ -33,6 +33,7 @@ class IncController extends Controller
             $piso = Piso::find($inc->piso_id);
             if(isset($piso)){
                 $inc->piso_nombre = $piso->nombre;
+                $inc->venue_id = $piso->venue_id;
             }else{
                 $inc->piso_nombre = '';
             } 
@@ -65,6 +66,7 @@ class IncController extends Controller
             $piso = Piso::find($inc->piso_id);
             if(isset($piso)){
                 $inc->piso_nombre = $piso->nombre;
+                $inc->venue_id = $piso->venue_id;
             }else{
                 $inc->piso_nombre = '';
             } 
@@ -126,6 +128,18 @@ class IncController extends Controller
             throw new Exception('Error getting related Issues of the user: '.$exception->getMessage());
         }
     }   
+    public function getWithVenue($venue_id){
+        try {
+            $incs = Inc::all() ;
+            foreach($incs as $inc){
+
+            }
+            return response()->json($incs,200);
+
+        } catch (Exception $exception) {
+            throw new Exception('Error getting related  Issues of the VENUE : '.$exception->getMessage());
+        }
+    }
    
     
 

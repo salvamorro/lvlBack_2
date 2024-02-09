@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Rrhh;
+use App\Models\Trabajo;
 use App\Models\User;
 use Carbon\Carbon;
 use Exception;
@@ -72,8 +73,39 @@ class RrhhController extends Controller
         } catch (Exception $exception) {
             throw new Exception('Error getting related Leave Request of the user: '.$exception->getMessage());
         }
-    }   
+    } 
+    // =======================================================================
+    public function getVenue($venue_id){
+        try {
+            $hoy = Carbon::now();
+            // 1º con el id del VENUE localizo todos los trabajos con ese venue_id
+            $trabajosDelVenue = Trabajo::where('venue_id',$venue_id)->where('fBaja','>',$hoy)->get();
+            // 2º con la lista de trabajos localizo sus users
+            $users = [];
+            $rrhhs = [];
+            foreach($trabajosDelVenue as $t){
+               
+                    $user = $t->user;
+                    // 3º con la lista de users localizo ls laeve metodo user->rrhh para sacar sus rrhh
+                    $rrhh = $user->rrhhs;
+                    
+                    
+                    foreach($rrhh as $r){
+                        $r->user_nombre = $user->nombre . " " . $user->apellidos;
+                        $r->respuestasRRHH;
+                        $trabajo = $user->trabajo;
+                        $r->departamento = $trabajo->departamento;
+                        array_push($rrhhs,$r);
+                    }
+                    
+            }
+            
+            return response()->json($rrhhs,200);
 
+        } catch (Exception $exception) {
+            throw new Exception('Error getting Venue Related Leave Request: '.$exception->getMessage());
+        }
+    }   
     // =========================================================================
     public function store(Request $request){
        

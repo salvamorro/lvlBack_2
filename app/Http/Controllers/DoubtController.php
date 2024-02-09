@@ -4,32 +4,53 @@ namespace App\Http\Controllers;
 
 use App\Models\Doubt;
 use App\Models\User;
+use Error;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class DoubtController extends Controller
 {
        // =========================================================================
-       public function index(){
+    public function index(){
 
         $doubts = Doubt::orderBy('created_at', 'desc')->get();
 
         foreach($doubts as $doubt){
             $respuestas = $doubt->respuestas;
             $user= User::find($doubt->user_id);
-            $doubt->user_nombre = $user->nombre. ' '. $user->apellidos;
-            $user->trabajo;
+            if(isset($user)){
+                $doubt->user_nombre = $user->nombre. ' '. $user->apellidos;
+                $user->trabajo;    
+            }
             foreach($respuestas as $respuesta){
                 $user = $respuesta->user;
-                if(isset($user->password)){
-                    $user->password = 'private';
-                }
                 
             }
         }
 
         return response()->json($doubts,200);
     }
+
+    public function pending(){
+        $doubts = Doubt::where('estado','!=','Solved')->orderBy('created_at', 'desc')->get();
+
+        foreach($doubts as $doubt){
+            $respuestas = $doubt->respuestas;
+            $user= User::find($doubt->user_id);
+            if(isset($user)){
+                $doubt->user_nombre = $user->nombre. ' '. $user->apellidos;
+                $user->trabajo;    
+            }
+            foreach($respuestas as $respuesta){
+                $user = $respuesta->user;
+                
+            }
+        }
+
+        return response()->json($doubts,200);
+    }
+    
     // =========================================================================
     public function show($id){
 
@@ -67,26 +88,30 @@ class DoubtController extends Controller
             throw new Exception('Error getting related doubts of the user: '.$exception->getMessage());
         }
     }   
-   
-    
-
     // =========================================================================
     public function store(Request $request){
        
-        $body = $request->getContent();
-        $doubt = json_decode($body);
-
+      
         $doubtNueva = new Doubt;
 
         try {
 
-            $doubtNueva->user_id = $doubt->user_id;
-            $doubtNueva->titulo = $doubt->titulo;
-            $doubtNueva->descripcion = $doubt->descripcion;
-            $doubtNueva->foto = $doubt->foto;
-            $doubtNueva->estado = $doubt->estado;
-            
+            $doubtNueva->user_id = $request->user_id;
+            $doubtNueva->titulo = $request->titulo;
+            $doubtNueva->descripcion = $request->descripcion;
+            $doubtNueva->foto = $request->foto;
+            $doubtNueva->estado = $request->estado;
+            $doubtNueva->archivo = '';
             $doubtNueva->save();
+
+            if($request->hasFile('archivo') && $request->file('archivo')->isValid()){
+                $nombreArchivo = $request->file('archivo')->hashName();
+                $path = 'docs/doubts/'.$doubtNueva->id.'/'.$nombreArchivo;
+                Storage::disk('public')->put($path, file_get_contents($request->file('archivo')));
+                $doubtNueva->update(['archivo'=>"/storage/".$path]);
+            }
+            
+            
 
          
 
@@ -101,13 +126,26 @@ class DoubtController extends Controller
     }
     // =============================================================================
     public function delete($id){
+        
         try {
+            $doubt = Doubt::find($id);
+            if(!isset($doubt)){
+                return response()->json(['message'=>'Doubt Not Found!'],404);
+            }
+            $doubt->delete();
 
-          
-        } catch (Exception $exception) {
-
+            $borrado = Storage::disk('public')->deleteDirectory('docs/'.$id);
+            $mensaje = 'Doubt Deleted!';
+            if($borrado){
+                $mensaje += ' And it´s documents';
+            }
+            return response()->json(['message'=>$mensaje],200);
             
+        } catch (Exception $exception) {
+            throw new Error('Error deleting doubt data'.$exception->getMessage());
         }
+        
+
        
     }
     // =========================================================================

@@ -74,6 +74,7 @@ Route::get("user/", [UserController::class,"index"]);
 Route::get("user/{id}", [UserController::class,"show"]);
 Route::get("user/{id}", [UserController::class,"get"]);
 Route::get("user/piso/puerta/", [UserController::class,"pisoPuerta"]);
+Route::get("user/piso/puerta/venue/{venue_id}", [UserController::class,"pisoPuertaVenue"]);
 Route::delete("user/{id}", [UserController::class,"delete"]);
 Route::get("user/listado/inicial",[UserController::class,"listadoInicial"]);
 Route::post("user/", [UserController::class,"store"]);
@@ -113,6 +114,7 @@ Route::post("rrhh/",[RrhhController::class,"store"]);
 Route::delete("rrhh/{id}", [RrhhController::class,"delete"]);
 Route::put("rrhh/", [RrhhController::class,"actualizar"]);
 Route::get( "rrhh/user/{id}", [RrhhController::class,"getRelated"]);
+Route::get("rrhh/venue/{id}", [RrhhController::class , "getVenue"]);
 
 // =============================================================================RESPUESTASRRHH
 
@@ -133,14 +135,18 @@ Route::put("respuestaRRHH/", [RespuestaRRHHController::class,"actualizar"]);
  Route::post("mail/respuestaRRHH/", [MailController::class, "respuestaRRHH"]);
  Route::post("mail/nuevaDoubt/", [MailController::class, "nuevaDoubt"]);
  Route::post("mail/respuestaDoubt/", [MailController::class, "respuestaDoubt"]);
+ Route::get("mail/pruebas/{id}", [MailController::class, 'pruebas']);
 
 // DOUBT =======================================================================
 Route::get("doubt/", [DoubtController::class,"index"]);
 Route::get("doubt/{id}",[DoubtController::class,"show"]);
 Route::post("doubt/",[DoubtController::class,"store"]);
-Route::delete("doubt/", [DoubtController::class,"delete"]);
+Route::delete("doubt/{id}", [DoubtController::class,"delete"]);
 Route::put("doubt/", [DoubtController::class,"actualizar"]);
 Route::get( "doubt/user/{id}", [DoubtController::class,"getRelated"]);
+Route::get("doubt/pending/1",[DoubtController::class,"pending"]);
+
+
  
 // =============================================================================RESPUESTASDOUBT
 

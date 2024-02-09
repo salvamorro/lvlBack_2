@@ -11,6 +11,8 @@ use App\Models\Inc;
 use App\Models\Rrhh;
 use App\Models\Trabajo;
 use App\Models\User;
+use App\Models\Venue;
+use Error;
 use Exception;
 use Firebase\JWT\JWT;
 use Illuminate\Http\Request;
@@ -54,26 +56,6 @@ class MailController extends Controller
 
         }
     }
-    public function getResponsables(Trabajo $trabajo): array{
-        $usersAdmin = User::where('adminPiso',1)->get();
-        $responsables = [];
-        foreach($usersAdmin as $user){
-            $trabaja = $user->trabajo;
-            if(isset($trabaja)){
-                if($trabaja->venue_id == $trabajo->venue_id ){
-                    array_push($responsables, $user);
-                }
-            }
-        }
-        if(count($responsables) == 0){
-            foreach($usersAdmin as $user){
-                array_push($responsables, $user);
-            }
-        }
-        return $responsables;
- 
-     }
-
      public function recordarPass(Request $request){
 
         $body = $request->getContent();
@@ -102,7 +84,6 @@ class MailController extends Controller
 
         }
     }
-
     public function notificar(Request $request){
         $body = $request->getContent();
         $objeto = json_decode($body);
@@ -113,7 +94,6 @@ class MailController extends Controller
 
         
     }
-
     public function respuestaInc(Request $request){
         $body = $request->getContent();
         $respuesta = json_decode($body);
@@ -147,11 +127,10 @@ class MailController extends Controller
             throw new Exception('Error sending mail  '.$exception->getMessage());
         }
     }
-
     public function nuevaRRHH(Request $request){
             $body = $request->getContent();
             $rrhh = json_decode($body);
-            $tipo = "Human Resources Request";
+            $tipo = "Leave Request";
             $titulo = "Request";
             try {
             $mensaje = $rrhh->descripcion;
@@ -171,26 +150,6 @@ class MailController extends Controller
             }
         
     }
-    public function getResponsablesRRHH(Trabajo $trabajo): array{
-        $usersAdmin = User::where('adminRRHH',1)->get();
-        $responsables = [];
-        foreach($usersAdmin as $user){
-            $trabaja = $user->trabajo;
-            if(isset($trabaja)){
-                if($trabaja->venue_id == $trabajo->venue_id ){
-                    array_push($responsables, $user);
-                }
-            }
-        }
-        if(count($responsables) == 0){
-            foreach($usersAdmin as $user){
-                array_push($responsables, $user);
-            }
-        }
-        
-        return $responsables;
- 
-     }
      public function respuestaRRHH(Request $request){
         $body = $request->getContent();
         $respuesta = json_decode($body);
@@ -224,7 +183,6 @@ class MailController extends Controller
             throw new Exception('Error sending mail  '.$exception->getMessage());
         }
     }
-
     public function nuevaDoubt(Request $request){
         $body = $request->getContent();
         $doubt = json_decode($body);
@@ -248,7 +206,6 @@ class MailController extends Controller
         }
     
     }
-
     public function respuestaDoubt(Request $request){
         $body = $request->getContent();
         $respuesta = json_decode($body);
@@ -282,8 +239,19 @@ class MailController extends Controller
             throw new Exception('Error sending mail respuesta Doubt '.$exception->getMessage());
         }
     }
-    public function getResponsablesDoubt(Trabajo $trabajo): array{
-        $usersAdmin = User::where('adminPay',1)->get();
+    public function pruebas($venue_id){
+        try{
+            $numero = intVal($venue_id);
+            $trabajo = Trabajo::where('venue_id', $numero)->first();
+            var_dump($this->getResponsables($trabajo)) ;
+        }catch(Exception $e){
+            throw new Error($e->getMessage());
+        }
+       
+    }
+    public function getResponsables(Trabajo $trabajo): array{
+        $usersAdmin= User::where('adminPiso',1)->where('reciMails',1)->get();
+       
         $responsables = [];
         foreach($usersAdmin as $user){
             $trabaja = $user->trabajo;
@@ -294,8 +262,90 @@ class MailController extends Controller
             }
         }
         if(count($responsables) == 0){
-            foreach($usersAdmin as $user){
+            $superAdmins = User::where('superAdmin', 1)->get();
+            foreach($superAdmins as $user){
+                $trabaja = $user->trabajo;
+                if(isset($trabaja)){
+                    if($trabaja->venue_id == $trabajo->venue_id ){
+                        array_push($responsables, $user);
+                    }
+                }
+            }
+        }
+        if(count($responsables) == 0){
+            $superAdmins = User::where('superAdmin', 1)->get();
+            foreach($superAdmins as $user){
+               
                 array_push($responsables, $user);
+                
+            }
+        }
+
+        return $responsables;
+ 
+    }
+    public function getResponsablesRRHH(Trabajo $trabajo): array{
+        $usersAdmin = User::where('adminRRHH',1)->where('reciMails',1)->get();
+        $responsables = [];
+        foreach($usersAdmin as $user){
+            $trabaja = $user->trabajo;
+            if(isset($trabaja)){
+                if($trabaja->venue_id == $trabajo->venue_id ){
+                    array_push($responsables, $user);
+                }
+            }
+        }
+        if(count($responsables) == 0){
+            $superAdmins = User::where('superAdmin', 1)->get();
+            foreach($superAdmins as $user){
+                $trabaja = $user->trabajo;
+                if(isset($trabaja)){
+                    if($trabaja->venue_id == $trabajo->venue_id ){
+                        array_push($responsables, $user);
+                    }
+                }
+            }
+        }
+        if(count($responsables) == 0){
+            $superAdmins = User::where('superAdmin', 1)->get();
+            foreach($superAdmins as $user){
+               
+                array_push($responsables, $user);
+                
+            }
+        }
+        
+        return $responsables;
+ 
+    }
+    public function getResponsablesDoubt(Trabajo $trabajo): array{
+        $usersAdmin = User::where('adminPay',1)->where('reciMails',1)->get();
+        $responsables = [];
+        foreach($usersAdmin as $user){
+            $trabaja = $user->trabajo;
+            if(isset($trabaja)){
+                if($trabaja->venue_id == $trabajo->venue_id ){
+                    array_push($responsables, $user);
+                }
+            }
+        }
+        if(count($responsables) == 0){
+            $superAdmins = User::where('superAdmin', 1)->get();
+            foreach($superAdmins as $user){
+                $trabaja = $user->trabajo;
+                if(isset($trabaja)){
+                    if($trabaja->venue_id == $trabajo->venue_id ){
+                        array_push($responsables, $user);
+                    }
+                }
+            }
+        }
+        if(count($responsables) == 0){
+            $superAdmins = User::where('superAdmin', 1)->get();
+            foreach($superAdmins as $user){
+               
+                array_push($responsables, $user);
+                
             }
         }
         

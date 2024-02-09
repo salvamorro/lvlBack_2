@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Http\Controllers\RrhhController;
 use DateTime;
 use Illuminate\Database\Eloquent\Factories\BelongsToRelationship;
 use Illuminate\Database\Eloquent\Model;
@@ -12,7 +13,7 @@ use Illuminate\Database\Eloquent\Relations\HasOneThrough;
 
 class User extends Model{
 
-    
+    protected $hidden = ['password'];
     // public ?int $id = null;
     // public string $nombre;
     // public string $apellidos;
@@ -47,6 +48,9 @@ class User extends Model{
     // public function trabajos(): HasMany{
     //     return $this->hasMany(Trabajo::class);
     // }
+    public function rrhhs(): HasMany{
+        return $this->hasMany((Rrhh::class));
+    }
 
     public function trabajo(): BelongsTo{
         return $this->belongsTo(Trabajo::class);

@@ -10,6 +10,8 @@ class RespuestaDoubt extends Model
 {
     use HasFactory;
 
+    protected $fillable= ['archivo'];
+
     public function user():BelongsTo{
         return $this->belongsTo(User::class);
     }

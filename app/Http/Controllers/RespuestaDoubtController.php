@@ -6,6 +6,7 @@ use App\Models\RespuestaDoubt;
 use Error;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class RespuestaDoubtController extends Controller{
 // =========================================================================
@@ -15,9 +16,7 @@ public function index(){
 
     foreach($respuestas as $respuesta){
         $user = $respuesta->user;
-        if(isset($user->password)){
-            $user->password = 'private';
-        }
+        
         
     }
 
@@ -35,21 +34,23 @@ public function show($id){
 }
 // =========================================================================
 public function store(Request $request){
-   
+    $respuestaNueva = new RespuestaDoubt;
     try {
-        $respuestaNueva = new RespuestaDoubt;
-        
-        $body = $request->getContent();
-        $respuesta = json_decode($body);
-        
-        $respuestaNueva->user_id = $respuesta->user_id;
-        $respuestaNueva->mensaje = $respuesta->mensaje;
-        $respuestaNueva->tipo = $respuesta ->tipo;
-        $respuestaNueva->doubt_id = $respuesta->doubt_id;
-        $respuestaNueva->foto = $respuesta->foto;
         
 
+       $respuestaNueva->user_id = $request->user_id;
+        $respuestaNueva->mensaje = $request->mensaje;
+        $respuestaNueva->tipo = $request ->tipo;
+        $respuestaNueva->doubt_id = $request->doubt_id;
+        $respuestaNueva->foto = $request->foto;
         $respuestaNueva->save();
+
+        if($request->hasFile('archivo') && $request->file('archivo')->isValid()){
+            $nombreArchivo = $request->file('archivo')->hashName();
+            $path = 'docs/respuestasDoubts/'.$respuestaNueva->id.'/'.$nombreArchivo;
+            Storage::disk('public')->put($path, file_get_contents($request->file('archivo')));
+            $respuestaNueva->update(['archivo'=>"/storage/".$path]);
+        }
 
         return response()->json(['message'=>'Answer Added!'],200);
 

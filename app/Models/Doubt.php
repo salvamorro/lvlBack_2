@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Doubt extends Model
 {
+    protected $fillable= ['archivo'];
     use HasFactory;
     public function respuestas(): HasMany{
         return $this->hasMany(RespuestaDoubt::class);
