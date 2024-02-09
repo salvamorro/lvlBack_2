@@ -22,7 +22,14 @@ class VenueController extends Controller
     }
    
     public function show($id){
+        try{
+            $venue = Venue::find($id);
 
+            return response()->json($venue, 200);
+        }catch(Exception $e){
+            throw new Exception('Error Reading Venue: '.$e->getMessage());
+
+        }
     }
     public function store(Request $request){
         try{

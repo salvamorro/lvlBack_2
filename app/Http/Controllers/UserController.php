@@ -128,7 +128,7 @@ class UserController extends BaseController
             }
             
 
-         $user->password = 'private';
+        
              
              
              
@@ -181,24 +181,29 @@ class UserController extends BaseController
             foreach ($users as $user){
                 
                 $trabajo = $user->trabajo;
-               
                 if(isset($trabajo)){
-                    $puerta = Puerta::where('id', $trabajo->puerta_id)->first();
-                    $piso = Piso::where('id', $trabajo->piso_id)->first();
-                    if(isset($puerta)){
-                        $user->puerta = $puerta;
-                        $user->piso = $piso;
-
-                    }else{
-                        $user->puerta = null;
-                        $user->piso = null;
+                    if($trabajo->venue_id == $venue_id){
+                        if(isset($trabajo)){
+    
+                            $puerta = Puerta::where('id', $trabajo->puerta_id)->first();
+                           
+                            
+                            if(isset($puerta)){
+                                $user->puerta = $puerta;
+                                $user->piso = Piso::where('id', $trabajo->piso_id)->first();
+    
+                            }else{
+                                $user->puerta = null;
+                                $user->piso = null;
+                            }
+                            $user->working = true;
+                        }
+                    
+                   
+                        array_push($usersDelVenue, $user);
                     }
-                    $user->working = true;
                 }
                 
-                if($trabajo->venue_id == $venue_id){
-                    array_push($usersDelVenue, $user);
-                }
 
             }
             return response()->json($usersDelVenue,200);
