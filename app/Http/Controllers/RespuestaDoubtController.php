@@ -47,7 +47,7 @@ public function store(Request $request){
 
         if($request->hasFile('archivo') && $request->file('archivo')->isValid()){
             $nombreArchivo = $request->file('archivo')->hashName();
-            $path = 'docs/respuestasDoubts/'.$respuestaNueva->id.'/'.$nombreArchivo;
+            $path = 'docs/doubts/'.$respuestaNueva->doubt_id.'/'.$nombreArchivo;
             Storage::disk('public')->put($path, file_get_contents($request->file('archivo')));
             $respuestaNueva->update(['archivo'=>"/storage/".$path]);
         }
