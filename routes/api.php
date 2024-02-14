@@ -28,11 +28,23 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-// Route::middleware("auth:sanctum")->get("/user", function (Request $request) {
-//     return $request->user();
-// });
-// =============================================================================ROLES
 
+Route::middleware('apiToken')->group( function () {
+// =============================================================================USERS
+Route::get("user/", [UserController::class,"index"]);
+Route::get("user/{id}", [UserController::class,"show"]);
+Route::get("user/{id}", [UserController::class,"get"]);
+Route::get("user/piso/puerta/", [UserController::class,"pisoPuerta"]);
+Route::get("user/piso/puerta/venue/{venue_id}", [UserController::class,"pisoPuertaVenue"]);
+Route::delete("user/{id}", [UserController::class,"delete"]);
+Route::get("user/listado/inicial",[UserController::class,"listadoInicial"]);
+Route::post("user/", [UserController::class,"store"]);
+Route::post("user/{id}", [UserController::class,"update"]);
+Route::post("user/piso/{id}", [UserController::class,"updatePiso"]);
+// =============================================================================LOGIN
+Route::post("login/", [LoginController::class,"login"]);
+Route::put("login/cambiarPass/{user_id}", [LoginController::class, "cambiarPass"]);
+//=============================================================================ROLES
 Route::get("role/",[RoleController::class,"index"]);
 Route::get("role/{id}",[RoleController::class,"show"]);
 Route::post("role/",[RoleController::class,"store"]);
@@ -66,25 +78,6 @@ Route::get("respuesta/{id}", [RespuestaController::class,"show"]);
 Route::post("respuesta/", [RespuestaController::class,"store"]);
 Route::get("respuesta/delete/{id}", [RespuestaController::class,"delete"]);
 Route::post("respuesta/{id}", [RespuestaController::class,"actualizar"]);
-
-
-// =============================================================================USERS
-
-Route::get("user/", [UserController::class,"index"]);
-Route::get("user/{id}", [UserController::class,"show"]);
-Route::get("user/{id}", [UserController::class,"get"]);
-Route::get("user/piso/puerta/", [UserController::class,"pisoPuerta"]);
-Route::get("user/piso/puerta/venue/{venue_id}", [UserController::class,"pisoPuertaVenue"]);
-Route::delete("user/{id}", [UserController::class,"delete"]);
-Route::get("user/listado/inicial",[UserController::class,"listadoInicial"]);
-Route::post("user/", [UserController::class,"store"]);
-Route::post("user/{id}", [UserController::class,"update"]);
-Route::post("user/piso/{id}", [UserController::class,"updatePiso"]);
-
-
-// =============================================================================LOGIN
-Route::post("login/", [LoginController::class,"login"]);
-Route::put("login/cambiarPass/{user_id}", [LoginController::class, "cambiarPass"]);
 // =============================================================================PUERTA
 Route::get("puerta/", [PuertaController::class,"index"]);
 Route::get("puerta/{id}", [PuertaController::class,"show"]);
@@ -145,9 +138,6 @@ Route::delete("doubt/{id}", [DoubtController::class,"delete"]);
 Route::put("doubt/", [DoubtController::class,"actualizar"]);
 Route::get( "doubt/user/{id}", [DoubtController::class,"getRelated"]);
 Route::get("doubt/pending/1",[DoubtController::class,"pending"]);
-
-
- 
 // =============================================================================RESPUESTASDOUBT
 
 Route::get("respuestaDoubt/", [RespuestaDoubtController::class,"index"]);
@@ -158,3 +148,8 @@ Route::put("respuestaDoubt/", [RespuestaDoubtController::class,"actualizar"]);
 
 // ============================================================================= PRUEBAS
 Route::post("decode/", [LoginController::class, "decodePass"]);
+
+});
+
+
+ 
