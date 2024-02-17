@@ -33,7 +33,7 @@ Route::middleware('auth:sanctum')->get('abc/', [UserController::class, "index"])
 // =============================================================================LOGIN
 Route::post("login/", [LoginController::class,"login"])->withoutMiddleware('auth:sanctum');
 Route::put("login/cambiarPass/{user_id}", [LoginController::class, "cambiarPass"])->withoutMiddleware('auth:sanctum');
-
+Route::post("mail/changePass/", [MailController::class,"recordarPass"]);
 
 
 
@@ -130,7 +130,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // ========================================================================== MAIL
     Route::post("mail/nuevaInc/", [MailController::class,"nuevaInc"]);
-    Route::post("mail/changePass/", [MailController::class,"recordarPass"]);
+   
     Route::post("mail/notificar/", [MailController::class, "notificar"]);
     Route::post("mail/respuesta/", [MailController::class, "respuestaInc"]);
     Route::post("mail/nuevaRRHH/", [MailController::class, "nuevaRRHH"]);
