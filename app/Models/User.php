@@ -5,49 +5,31 @@ namespace App\Models;
 use App\Http\Controllers\RrhhController;
 use DateTime;
 use Illuminate\Database\Eloquent\Factories\BelongsToRelationship;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasOneThrough;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
+use Laravel\Sanctum\HasApiTokens;
 
-class User extends Model{
+class User extends Authenticatable {
 
     protected $hidden = ['password'];
-    // public ?int $id = null;
-    // public string $nombre;
-    // public string $apellidos;
-    // public string $mail;
-    // public string $telefono;
-    // public string $sexo;
-    // public bool $admin;
-    // public bool $superAdmin;
-    // public int $venue_id;
-    // public bool $departamento;
-    // public bool $working;
 
+    protected $fillable = [
+        'mail',
+        'password'
+    ];
 
-    //  public string $fAlta;
-    //  public string $fBaja;
-    // public string $password;
-    // public int $role_id;
-
-    // public ?int $piso_id;
-    // public ?int $puerta_id;
-
-
+    use HasApiTokens, HasFactory, Notifiable;
    
     public function incs(): HasMany{
         return $this->hasMany(Inc::class);
     }
 
-    // public function trabajos(): HasMany{
-    //     return $this->hasMany(Trabajo::class);
-    // }
-
-    // public function trabajos(): HasMany{
-    //     return $this->hasMany(Trabajo::class);
-    // }
     public function rrhhs(): HasMany{
         return $this->hasMany((Rrhh::class));
     }
@@ -59,13 +41,6 @@ class User extends Model{
         return $this->hasOneThrough(Trabajo::class, Role::class);
     }
 
-    // public function puerta(): HasOneThrough{
-    //     return $this->hasOneThrough(Puerta::class, Trabajo::class);
-    // }
-
-   
-    
-    
 
 
 };

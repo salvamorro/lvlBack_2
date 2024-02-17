@@ -20,14 +20,23 @@ class apiToken
     public function handle(Request $request, Closure $next): Response
     {
         try {
-            $apiKey = $_SERVER['HTTP_S3CR3T_API'];
+            $apiKey = $_SERVER['HTTP_TOKEN'];
+            
+            if($apiKey != env('S3CR3T_API')){
+                return response()->json(['message' => 'Access not Authorized']);
+                
+               // throw new Error('Access Denied: wrong api Token');
+            }
+            if(!isset( $apiKey)){
+                return response()->json(['message' => 'Access not Authorized']);
+               // throw new Error('Access Denied: not api Token');
 
-            if($apiKey != env('S3CR3T_API') || !isset( $apiKey)){
-                return response()->json(['message' => 'No way I will let you in']);
             }
             return $next($request);
         } catch (Exception $e) {
-            return response()->json(['message' => 'No way I will let you in']);
+             return response()->json(['message' => 'Exception in Middleware API TOKEN' . $e->getMessage()]);
+           // throw new Error('Exception in Middleware API TOKEN' . $e->getMessage());
+
         }
        
     }

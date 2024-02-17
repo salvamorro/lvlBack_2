@@ -21,7 +21,7 @@ return [
 
     'allowed_origins' => ['*'],
 
-    'allowed_origins_patterns' => ['http://wwww.alexaparicio.com/'],
+    'allowed_origins_patterns' => ['https://wwww.alexaparicio.com/'],
 
     'allowed_headers' => ['*'],
 

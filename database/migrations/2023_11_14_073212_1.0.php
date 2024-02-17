@@ -12,9 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         //Crear Tabla Incs
-        Schema::create("incs", function (Blueprint $table) {
-            $table->id();
-        }); 
+      
     }
 
     /**
